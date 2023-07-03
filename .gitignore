@@ -50,3 +50,7 @@ release
 *.su
 *.idb
 *.pdb
+
+# TMP files
+*.xlsx#
+*.docx#
