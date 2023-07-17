@@ -1,2 +1,3 @@
-# can-bridge_v0.4-f412
+# STM32-can-bridge_v0.4
+stm32f412
  
