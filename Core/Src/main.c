@@ -23,7 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "RTC/RTC_utils.h"
+#include "CAN/CAN_utils.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,6 +55,48 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for sendTask50ms */
+osThreadId_t sendTask50msHandle;
+const osThreadAttr_t sendTask50ms_attributes = {
+  .name = "sendTask50ms",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* Definitions for sendTask100ms */
+osThreadId_t sendTask100msHandle;
+const osThreadAttr_t sendTask100ms_attributes = {
+  .name = "sendTask100ms",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* Definitions for sendTask200ms */
+osThreadId_t sendTask200msHandle;
+const osThreadAttr_t sendTask200ms_attributes = {
+  .name = "sendTask200ms",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* Definitions for sendTask500ms */
+osThreadId_t sendTask500msHandle;
+const osThreadAttr_t sendTask500ms_attributes = {
+  .name = "sendTask500ms",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* Definitions for sendTask1000ms */
+osThreadId_t sendTask1000msHandle;
+const osThreadAttr_t sendTask1000ms_attributes = {
+  .name = "sendTask1000ms",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* Definitions for sendTask5000ms */
+osThreadId_t sendTask5000msHandle;
+const osThreadAttr_t sendTask5000ms_attributes = {
+  .name = "sendTask5000ms",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -65,6 +108,12 @@ static void MX_CAN1_Init(void);
 static void MX_CAN2_Init(void);
 static void MX_RTC_Init(void);
 void StartDefaultTask(void *argument);
+void sendTask50msHandler(void *argument);
+void sendTask100msHandler(void *argument);
+void sendTask200msHandler(void *argument);
+void sendTask500msHandler(void *argument);
+void sendTask1000msHandler(void *argument);
+void sendTask5000msHandler(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -108,6 +157,11 @@ int main(void)
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
 
+  uint8_t msgData036[8] = {0x0E, 0x00, 0x03, 0x0F, 0X91, 0x00, 0x01, 0xAC};
+  CanMessage msg036 = createCanMessage(36, 8, msgData036);
+
+  canMessageSend(&hcan1, &msg036, &TxMailbox);
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -133,6 +187,24 @@ int main(void)
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
+  /* creation of sendTask50ms */
+  sendTask50msHandle = osThreadNew(sendTask50msHandler, NULL, &sendTask50ms_attributes);
+
+  /* creation of sendTask100ms */
+  sendTask100msHandle = osThreadNew(sendTask100msHandler, NULL, &sendTask100ms_attributes);
+
+  /* creation of sendTask200ms */
+  sendTask200msHandle = osThreadNew(sendTask200msHandler, NULL, &sendTask200ms_attributes);
+
+  /* creation of sendTask500ms */
+  sendTask500msHandle = osThreadNew(sendTask500msHandler, NULL, &sendTask500ms_attributes);
+
+  /* creation of sendTask1000ms */
+  sendTask1000msHandle = osThreadNew(sendTask1000msHandler, NULL, &sendTask1000ms_attributes);
+
+  /* creation of sendTask5000ms */
+  sendTask5000msHandle = osThreadNew(sendTask5000msHandler, NULL, &sendTask5000ms_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -143,6 +215,7 @@ int main(void)
 
   /* Start scheduler */
   osKernelStart();
+
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -311,7 +384,11 @@ static void MX_RTC_Init(void)
   }
 
   /* USER CODE BEGIN Check_RTC_BKUP */
-
+  if(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR9) == '*')
+  {
+	  //Time is OK.
+	  return;
+  }
   /* USER CODE END Check_RTC_BKUP */
 
   /** Initialize RTC and set the Time and Date
@@ -408,6 +485,159 @@ void StartDefaultTask(void *argument)
     osDelay(1);
   }
   /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_sendTask50msHandler */
+/**
+* @brief Function implementing the sendTask50ms thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_sendTask50msHandler */
+void sendTask50msHandler(void *argument)
+{
+  /* USER CODE BEGIN sendTask50msHandler */
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = 50 / portTICK_PERIOD_MS;
+
+	xLastWakeTime = xTaskGetTickCount();
+  /* Infinite loop */
+  for(;;)
+  {
+	  vTaskDelayUntil(&xLastWakeTime, xFrequency);
+  }
+  /* USER CODE END sendTask50msHandler */
+}
+
+/* USER CODE BEGIN Header_sendTask100msHandler */
+/**
+* @brief Function implementing the sendTask100ms thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_sendTask100msHandler */
+void sendTask100msHandler(void *argument)
+{
+  /* USER CODE BEGIN sendTask100msHandler */
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = 100 / portTICK_PERIOD_MS;
+
+	xLastWakeTime = xTaskGetTickCount();
+  /* Infinite loop */
+  for(;;)
+  {
+	  vTaskDelayUntil(&xLastWakeTime, xFrequency);
+  }
+  /* USER CODE END sendTask100msHandler */
+}
+
+/* USER CODE BEGIN Header_sendTask200msHandler */
+/**
+* @brief Function implementing the sendTask200ms thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_sendTask200msHandler */
+void sendTask200msHandler(void *argument)
+{
+  /* USER CODE BEGIN sendTask200msHandler */
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = 200 / portTICK_PERIOD_MS;
+
+	xLastWakeTime = xTaskGetTickCount();
+  /* Infinite loop */
+  for(;;)
+  {
+	  vTaskDelayUntil(&xLastWakeTime, xFrequency);
+  }
+  /* USER CODE END sendTask200msHandler */
+}
+
+/* USER CODE BEGIN Header_sendTask500msHandler */
+/**
+* @brief Function implementing the sendTask500ms thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_sendTask500msHandler */
+void sendTask500msHandler(void *argument)
+{
+  /* USER CODE BEGIN sendTask500msHandler */
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = 500 / portTICK_PERIOD_MS;
+
+	xLastWakeTime = xTaskGetTickCount();
+  /* Infinite loop */
+  for(;;)
+  {
+	  vTaskDelayUntil(&xLastWakeTime, xFrequency);
+  }
+  /* USER CODE END sendTask500msHandler */
+}
+
+/* USER CODE BEGIN Header_sendTask1000msHandler */
+/**
+* @brief Function implementing the sendTask1000ms thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_sendTask1000msHandler */
+void sendTask1000msHandler(void *argument)
+{
+  /* USER CODE BEGIN sendTask1000msHandler */
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = 1000 / portTICK_PERIOD_MS;
+
+	xLastWakeTime = xTaskGetTickCount();
+  /* Infinite loop */
+  for(;;)
+  {
+	  vTaskDelayUntil(&xLastWakeTime, xFrequency);
+  }
+  /* USER CODE END sendTask1000msHandler */
+}
+
+/* USER CODE BEGIN Header_sendTask5000msHandler */
+/**
+* @brief Function implementing the sendTask5000ms thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_sendTask5000msHandler */
+void sendTask5000msHandler(void *argument)
+{
+  /* USER CODE BEGIN sendTask5000msHandler */
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = 5000 / portTICK_PERIOD_MS;
+
+	xLastWakeTime = xTaskGetTickCount();
+  /* Infinite loop */
+  for(;;)
+  {
+	  vTaskDelayUntil(&xLastWakeTime, xFrequency);
+  }
+  /* USER CODE END sendTask5000msHandler */
+}
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM1 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM1) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
 }
 
 /**
