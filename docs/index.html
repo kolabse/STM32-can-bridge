@@ -1,152 +1,187 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Генератор конфигурации</title>
+    <title>CAN-bridge</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css">
 </head>
 <body>
-      <div class="container">
-        <h1>Конфигурация</h1>
-        <form onsubmit="downloadFormData('config.txt')">
-          <div class="mb-3">
-            <label for="vinNumber" class="form-label">Vin:</label>
-            <input type="text" class="form-control" id="vinNumber" name="vinNumber">
-          </div>
-          <div class="mb-3">
-            <label for="languageID" class="form-label">Язык:</label>
-            <select class="form-select" id="languageID" name="languageID">
-              <option selected disabled value="0">Выберите язык</option>
-              <option value="0">FR</option>
-              <option value="1">EN</option>
-              <option value="2">DE</option>
-              <option value="3">ES</option>
-              <option value="4">IT</option>
-              <option value="5">PT</option>
-              <option value="6">NL</option>
-              <option value="9">BR</option>
-              <option value="12">TR</option>
-              <option value="14">RU</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="steeringWheelCommands_Type" class="form-label">Тип FMUX:</label>
-            <select class="form-select" id="steeringWheelCommands_Type" name="steeringWheelCommands_Type">
-              <option selected disabled value="0">Выберите тип панели FMUX</option>
-              <option value="0">Generic</option>
-              <option value="1">C4 I / C5 X7 NAV+MUSIC+APPS+PHONE mapping</option>
-              <option value="2">C4 I / C5 X7 MENU mapping</option>
-              <option value="3">C4 I / C5 X7 MENU mapping + SRC on wiper command button</option>
-              <option value="4">C4 I / C5 X7 MENU mapping + TRIP on wiper command button</option>
-              <option value="5">C4 I / C5 X7 MENU mapping + SRC on wiper command button + TRIP on ESC button</option>
-            </select>
-          </div>
+    <div class="container">
+        <h1>STM32-can-bridge</h1>
 
-          <div class="mb-3">
-            <label class="form-label">Настройки:</label>
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+              <a class="nav-link active" data-bs-toggle="tab" href="#home">Описание</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#menu1">Железо</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#menu2">Разработка</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#menu3">Конфигуратор</a>
+          </li>
+        </ul>
+
+      <div class="tab-content">
+        <div id="home" class="tab-pane fade show active">
+            <h3>Общее описание и назначение</h3>
+            <p>В процессе написания. Следите за обновлениями...</p>
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <h3>Аппаратная часть</h3>
+            <p>В процессе написания. Следите за обновлениями...</p>
+        </div>
+        <div id="menu2" class="tab-pane fade">
+            <h3>Участие в проекте</h3>
+            <p>Всех неравнодушных приглашаю присоединиться к процессу разработки ПО</p>
+            <p>Контакты для связи: <a href="https://t.me/mikefedd">Telegram</a> <a href="mailto:mikefedd@gmail.com">Email</a></p>
+        </div>
+        <div id="menu3" class="tab-pane fade">
+          <h3>Конфигурация</h3>
+          <form onsubmit="downloadFormData('config.txt')">
+            <div class="mb-3">
+              <label for="vinNumber" class="form-label">Vin:</label>
+              <input type="text" class="form-control" id="vinNumber" name="vinNumber">
+            </div>
+            <div class="mb-3">
+              <label for="languageID" class="form-label">Язык:</label>
+              <select class="form-select" id="languageID" name="languageID">
+                <option selected disabled value="0">Выберите язык</option>
+                <option value="0">FR</option>
+                <option value="1">EN</option>
+                <option value="2">DE</option>
+                <option value="3">ES</option>
+                <option value="4">IT</option>
+                <option value="5">PT</option>
+                <option value="6">NL</option>
+                <option value="9">BR</option>
+                <option value="12">TR</option>
+                <option value="14">RU</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="steeringWheelCommands_Type" class="form-label">Тип FMUX:</label>
+              <select class="form-select" id="steeringWheelCommands_Type" name="steeringWheelCommands_Type">
+                <option selected disabled value="0">Выберите тип панели FMUX</option>
+                <option value="0">Generic</option>
+                <option value="1">C4 I / C5 X7 NAV+MUSIC+APPS+PHONE mapping</option>
+                <option value="2">C4 I / C5 X7 MENU mapping</option>
+                <option value="3">C4 I / C5 X7 MENU mapping + SRC on wiper command button</option>
+                <option value="4">C4 I / C5 X7 MENU mapping + TRIP on wiper command button</option>
+                <option value="5">C4 I / C5 X7 MENU mapping + SRC on wiper command button + TRIP on ESC button</option>
+              </select>
+            </div>
+  
+            <div class="mb-3">
+              <label class="form-label">Настройки:</label>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="emulateVIN" id="emulateVIN">
+                <label class="form-check-label" for="emulateVIN">
+                  Подменять VIN на введеный
+                </label>
+              </div>
+  
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="listenCAN2004Language" id="listenCAN2004Language">
+                <label class="form-check-label" for="listenCAN2004Language">
+                  Использовать язык из CAN1
+                </label>
+              </div>
+  
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="noFMUX" id="noFMUX">
+                <label class="form-check-label" for="noFMUX">
+                  Нет панели FMUX
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="hasAnalogicButtons" id="hasAnalogicButtons">
+                <label class="form-check-label" for="hasAnalogicButtons">
+                  Аналоговые кнопки вместо FMUX
+                </label>
+              </div>
+  
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="generatePOPups" id="generatePOPups">
+                <label class="form-check-label" for="generatePOPups">
+                  Генерировать всплывающие предупреждения из журнала предупрреждений
+                </label>
+              </div>
+  
+  
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="CVM_Emul" id="CVM_Emul">
+                <label class="form-check-label" for="CVM_Emul">
+                  Эмулировать CVM
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="fixedBrightness" id="fixedBrightness">
+                <label class="form-check-label" for="fixedBrightness">
+                  Фиксированная яркость
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="TemperatureInF" id="TemperatureInF">
+                <label class="form-check-label" for="TemperatureInF">
+                  Температура в Фаренгейтах
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="mpgMi" id="mpgMi">
+                <label class="form-check-label" for="mpgMi">
+                  Скорость в милях
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="kmL" id="kmL">
+                <label class="form-check-label" for="kmL">
+                  Расход в km/L вместо L/100 
+                </label>
+              </div>
+            </div>
+  
+            <div class="mb-3">
+              <label class="form-label">Дополнительные настройки:</label>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="debugGeneral" id="debugGeneral">
+                <label class="form-check-label" for="debugGeneral">
+                  Режим отладки
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="debugCAN1" id="debugCAN1">
+                <label class="form-check-label" for="debugCAN1">
+                  Отладка CAN1
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="debugCAN2" id="debugCAN2">
+                <label class="form-check-label" for="debugCAN2">
+                  Отладка CAN2
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="Send_CAN2010_ForgedMessages" id="Send_CAN2010_ForgedMessages">
+                <label class="form-check-label" for="Send_CAN2010_ForgedMessages">
+                  Отправка сообщений шины CAN2 в шину CAN1 
+                </label>
+              </div>
+            </div>
             
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="emulateVIN" id="emulateVIN">
-              <label class="form-check-label" for="emulateVIN">
-                Подменять VIN на введеный
-              </label>
-            </div>
-
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="listenCAN2004Language" id="listenCAN2004Language">
-              <label class="form-check-label" for="listenCAN2004Language">
-                Использовать язык из CAN1
-              </label>
-            </div>
-
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="noFMUX" id="noFMUX">
-              <label class="form-check-label" for="noFMUX">
-                Нет панели FMUX
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="hasAnalogicButtons" id="hasAnalogicButtons">
-              <label class="form-check-label" for="hasAnalogicButtons">
-                Аналоговые кнопки вместо FMUX
-              </label>
-            </div>
-
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="generatePOPups" id="generatePOPups">
-              <label class="form-check-label" for="generatePOPups">
-                Генерировать всплывающие предупреждения из журнала предупрреждений
-              </label>
-            </div>
-
-
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="CVM_Emul" id="CVM_Emul">
-              <label class="form-check-label" for="CVM_Emul">
-                Эмулировать CVM
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="fixedBrightness" id="fixedBrightness">
-              <label class="form-check-label" for="fixedBrightness">
-                Фиксированная яркость
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="TemperatureInF" id="TemperatureInF">
-              <label class="form-check-label" for="TemperatureInF">
-                Температура в Фаренгейтах
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="mpgMi" id="mpgMi">
-              <label class="form-check-label" for="mpgMi">
-                Скорость в милях
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="kmL" id="kmL">
-              <label class="form-check-label" for="kmL">
-                Расход в km/L вместо L/100 
-              </label>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Дополнительные настройки:</label>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="debugGeneral" id="debugGeneral">
-              <label class="form-check-label" for="debugGeneral">
-                Режим отладки
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="debugCAN1" id="debugCAN1">
-              <label class="form-check-label" for="debugCAN1">
-                Отладка CAN1
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="debugCAN2" id="debugCAN2">
-              <label class="form-check-label" for="debugCAN2">
-                Отладка CAN2
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="Send_CAN2010_ForgedMessages" id="Send_CAN2010_ForgedMessages">
-              <label class="form-check-label" for="Send_CAN2010_ForgedMessages">
-                Отправка сообщений шины CAN2 в шину CAN1 
-              </label>
-            </div>
-          </div>
-          
-          <button type="submit" class="btn btn-primary">Скачать</button>
-
-        </form>
-
-        <a href="https://github.com/kolabse/STM32-can-bridge">Репозиторий</a>
-        <br>
+            <button type="submit" class="btn btn-primary">Скачать</button>
+  
+          </form>
+        </div>
       </div>
+    
+      <br>
+      <a href="https://github.com/kolabse/STM32-can-bridge">Репозиторий</a>
+    </div>  
     
     <script>
         function downloadFormData(filename) {
