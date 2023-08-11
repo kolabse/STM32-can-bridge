@@ -98,7 +98,8 @@ const osThreadAttr_t sendTask5000ms_attributes = {
   .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* USER CODE BEGIN PV */
-
+uint32_t TxMailbox = 0;
+CanMessage CanArray[0x5FF];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
