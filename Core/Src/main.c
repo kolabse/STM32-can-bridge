@@ -98,8 +98,7 @@ const osThreadAttr_t sendTask5000ms_attributes = {
   .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* USER CODE BEGIN PV */
-uint32_t TxMailbox = 0;
-CanMessage CanArray[0x5FF];
+Can_DataTypeDef canData = {0, 0, 0};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -158,10 +157,12 @@ int main(void)
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
 
-  uint8_t msgData036[8] = {0x0E, 0x00, 0x03, 0x0F, 0X91, 0x00, 0x01, 0xAC};
-  CanMessage msg036 = createCanMessage(36, 8, msgData036);
+  assignDefaultValues(&canData);
 
-  canMessageSend(&hcan1, &msg036, &TxMailbox);
+  if(sendCanMessage(&hcan1, &canData, 0x036) == CAN_OK)
+	  canData.canErrCounter--;
+  else
+	  canData.canErrCounter++;
 
   /* USER CODE END 2 */
 

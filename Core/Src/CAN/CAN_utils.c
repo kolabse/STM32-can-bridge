@@ -1,29 +1,47 @@
 #include "CAN/CAN_utils.h"
 
-
-CanMessage createCanMessage(uint32_t id, uint32_t dlc, uint8_t data[8])
-{
-	CanMessage message;
-
-	message.msgHeader.StdId = id;
-	message.msgHeader.ExtId = 0;
-	message.msgHeader.RTR = CAN_RTR_DATA;
-	message.msgHeader.IDE = CAN_ID_STD;
-	message.msgHeader.DLC = dlc;
-	message.msgHeader.TransmitGlobalTime = DISABLE;
-
-	//uint8_t size = sizeof(data)/sizeof(data[0]);
-
-	for (int i = 0; i < 8; ++i)
-	{
-		message.msgData[i] = data[i];
-	}
-
-	return message;
+void copyArray(uint8_t source[], uint8_t destination[], uint8_t length) {
+    for (int i = 0; i < length; i++) {
+        destination[i] = source[i];
+    }
 }
 
-void canMessageSend(CAN_HandleTypeDef *hcan, CanMessage *canMessage, uint32_t *TxMailbox)
+void assignDefaultValues(Can_DataTypeDef *canData)
 {
+	uint8_t msgData036[8] = {0x0E, 0x00, 0x03, 0x0F, 0X91, 0x00, 0x01, 0xAC};
+
+	copyArray(msgData036, canData->canDataArray[0x036], 8);
+
+
+}
+
+CAN_StatusTypeDef sendCanMessage(CAN_HandleTypeDef *hcan, Can_DataTypeDef *canData, uint8_t messageId)
+{
+	CAN_TxHeaderTypeDef msgHeader;
+
+	uint32_t dlc = sizeof(canData->canDataArray[messageId])/sizeof(canData->canDataArray[messageId][0]);
+
+	msgHeader.StdId = messageId;
+	msgHeader.ExtId = 0;
+	msgHeader.RTR = CAN_RTR_DATA;
+	msgHeader.IDE = CAN_ID_STD;
+	msgHeader.DLC = dlc;
+	msgHeader.TransmitGlobalTime = DISABLE;
+
 	while(HAL_CAN_GetTxMailboxesFreeLevel(hcan) == 0);
-	HAL_CAN_AddTxMessage(hcan, &canMessage->msgHeader, canMessage->msgData, &TxMailbox);
+
+	HAL_StatusTypeDef status;
+
+	status = HAL_CAN_AddTxMessage(hcan, &msgHeader, canData->canDataArray[messageId], &canData->canTxMailbox);
+
+	if(status != HAL_OK)
+	{
+		return CAN_OK;
+	}
+	else
+	{
+		return CAN_ERROR;
+	}
+
+
 }
