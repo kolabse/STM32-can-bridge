@@ -98,7 +98,7 @@ const osThreadAttr_t sendTask5000ms_attributes = {
   .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* USER CODE BEGIN PV */
-Can_DataTypeDef canData = {0, 0, 0};
+Can_DataTypeDef canData = {0};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
