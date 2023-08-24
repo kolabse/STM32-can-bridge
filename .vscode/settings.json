@@ -3,5 +3,5 @@
         "main.h": "c",
         "stm32f4xx_hal.h": "c"
     },
-    "stm32-for-vscode.openOCDPath": false
+    "stm32-for-vscode.openOCDPath": "C:\\PROGRAM FILES\\XPACK-OPENOCD-0.12.0-1\\BIN\\OPENOCD.EXE"
 }
