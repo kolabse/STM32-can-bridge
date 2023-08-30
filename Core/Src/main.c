@@ -159,7 +159,7 @@ int main(void)
 
   assignDefaultValues(&canData);
 
-  if(sendCanMessage(&hcan1, &canData, 0x036) == CAN_OK)
+  if(sendCanMessage(&hcan1, &canData, 0x036) == HAL_OK)
 	  canData.canErrCounter--;
   else
 	  canData.canErrCounter++;

@@ -15,7 +15,7 @@ void assignDefaultValues(Can_DataTypeDef *canData)
 
 }
 
-CAN_StatusTypeDef sendCanMessage(CAN_HandleTypeDef *hcan, Can_DataTypeDef *canData, uint8_t messageId)
+HAL_StatusTypeDef sendCanMessage(CAN_HandleTypeDef *hcan, Can_DataTypeDef *canData, uint8_t messageId)
 {
 	CAN_TxHeaderTypeDef msgHeader;
 
@@ -32,16 +32,8 @@ CAN_StatusTypeDef sendCanMessage(CAN_HandleTypeDef *hcan, Can_DataTypeDef *canDa
 
 	HAL_StatusTypeDef status;
 
-	status = HAL_CAN_AddTxMessage(hcan, &msgHeader, canData->canDataArray[messageId], &canData->canTxMailbox);
+	return HAL_CAN_AddTxMessage(hcan, &msgHeader, canData->canDataArray[messageId], &canData->canTxMailbox);
 
-	if(status != HAL_OK)
-	{
-		return CAN_OK;
-	}
-	else
-	{
-		return CAN_ERROR;
-	}
 }
 void decodeCan04Message(uint8_t messageId, uint8_t messageData[8], Can_DataTypeDef *canData)
 {
